@@ -28,7 +28,7 @@ actorNetwork = [
 
 %% Import Training Data
 
-training_data = load('training_data\training.mat');
+training_data = load('training.mat');
 data = training_data.training;
 totalRows = size(data,1);
 
