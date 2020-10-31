@@ -1,4 +1,4 @@
-%% DDPG Agent Options
+%% DDPG Agent Options - specifies RL options for the DDPG agent as specified in the ECTE451 thesis
 agentOptions = rlDDPGAgentOptions;
 agentOptions.SampleTime = Ts;
 agentOptions.DiscountFactor = 0.99;
