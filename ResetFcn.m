@@ -1,5 +1,7 @@
 function in = ResetFcn(in)
 
+%% This function is run everytime one episode of training finishes. It specifies the starting specifications for the environment
+
 global x_pos y_pos ang_start
 
 x_pos = 1.2; % X start position
