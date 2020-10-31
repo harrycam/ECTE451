@@ -1,12 +1,7 @@
-% Walking Robot -- DDPG Neural Network Setup Script (2D Walker)
-% Copyright 2019 The MathWorks, Inc.
-% Network structure inspired by original 2015 DDPG paper 
-% "Continuous Control with Deep Reinforcement Learning", Lillicrap et al.
-% https://arxiv.org/pdf/1509.02971.pdf
-
 %% CRITIC
 % Create the critic network layers
 
+% Observation path input branch
 criticLayerSizes = [16 16];
 statePath = [
     imageInputLayer([numObs 1 1],'Normalization','none','Name', 'observation')
@@ -18,6 +13,8 @@ statePath = [
             'Weights',2/sqrt(criticLayerSizes(1))*(rand(criticLayerSizes(2),criticLayerSizes(1))-0.5), ... 
             'Bias',2/sqrt(criticLayerSizes(1))*(rand(criticLayerSizes(2),1)-0.5))
     ];
+    
+    % Action path input branch
 actionPath = [
     imageInputLayer([numAct 1 1],'Normalization','none', 'Name', 'action')
     fullyConnectedLayer(criticLayerSizes(2), 'Name', 'CriticActionFC1', ...
@@ -31,19 +28,19 @@ commonPath = [
             'Weights',2*5e-3*(rand(1,criticLayerSizes(2))-0.5), ...
             'Bias',2*5e-3*(rand(1,1)-0.5))
     ];
+    
 % Connect the layer graph
 criticNetwork = layerGraph(statePath);
 criticNetwork = addLayers(criticNetwork, actionPath);
 criticNetwork = addLayers(criticNetwork, commonPath);
 criticNetwork = connectLayers(criticNetwork,'CriticStateFC2','add/in1');
 criticNetwork = connectLayers(criticNetwork,'CriticActionFC1','add/in2');
+
 % Create critic representation
 criticOptions = rlRepresentationOptions('Optimizer','adam','LearnRate',1e-4, ... 
                                         'GradientThreshold',1,'L2RegularizationFactor',2e-4);
                                     
-%critic = rlQRepresentation(criticNetwork,criticOptions, ...
-                          %'Observation',{'observation'},env.getObservationInfo, ...
-                          %'Action',{'action'},env.getActionInfo);
+
                           
 critic = rlQValueRepresentation(criticNetwork,env.getObservationInfo,env.getActionInfo, ...
     'Observation',{'observation'}, ...
@@ -53,7 +50,7 @@ critic = rlQValueRepresentation(criticNetwork,env.getObservationInfo,env.getActi
 
 %% Create Pretrained Actor
 
-load('ActorSupervised2.mat','ActorNetObj'); 
+load('ActorSupervised2.mat','ActorNetObj'); % Load pre-trained actor NN
 
 % Create actor representation
 actorOptions = rlRepresentationOptions('Optimizer','adam','LearnRate',1e-4, ...
