@@ -1,3 +1,5 @@
+%% This is the main file to be run once a trained agent has been saved to the workspace
+
 %% SET UP ENVIRONMENT
 
 clc
