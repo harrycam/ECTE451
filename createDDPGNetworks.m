@@ -1,3 +1,5 @@
+%% This code generates the DDPG actor and critic agents for RL. The critic is randomly initiated weights and biases in its NN architecture, while the actor network is imported from the pretrained network
+
 %% CRITIC
 % Create the critic network layers
 
